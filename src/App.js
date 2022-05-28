@@ -3,28 +3,20 @@ import axios from 'axios';
 
 function App() {
 
-  // bairro: "Vila Santista"
-  // cep: "17054-500"
-  // complemento: ""
-  // ddd: "14"
-  // gia: "2094"
-  // ibge: "3506003"
-  // localidade: "Bauru"
-  // logradouro: "Rua Seiti Takeda"
-  // siafi: "6219"
-  // uf: "SP"
-
-  const [resposta, setResposta] = useState({ cep: '', endereco: '' });
+  const [resposta, setResposta] = useState({ cep: '', endereco: '' , bairro: '', localidade: '', uf: '' });
 
   useEffect(() => {
 
     axios.get(`https://viacep.com.br/ws/${resposta.cep}/json/`).then(response => {
       setResposta({ 
         cep: response.data.cep, 
-        endereco: response.data.logradouro 
+        endereco: response.data.logradouro,
+        bairro: response.data.bairro,
+        localidade: response.data.localidade,
+        uf: response.data.uf
       })
     });
-  }, [resposta.cep, resposta.endereco]);
+  }, [resposta.cep, resposta.endereco, resposta.bairro, resposta.localidade, resposta.uf]);
 
   return (
     <div>
@@ -36,7 +28,7 @@ function App() {
       </nav>
 
       <section className='container mt-5'>
-        <label for="cep" class="form-label">Digite seu CEP</label>
+        <label for="cep" class="form-label">CEP</label>
         <input min="9" max="9" id="cep" placeholder="00000-000" className='form-control' type="text" value={resposta.cep} onChange={(event) => {
           setResposta({ cep: event.target.value });
         }} />
@@ -52,15 +44,11 @@ function App() {
             </div>
 
             <div className="card-body">
-              <h5 className="card-title">{resposta.cep}</h5>
-              <p className="card-text">{resposta.endereco}</p>
-              {/* <p className="card-text">Logradaouro: {resposta.endereco}</p>
-              <p className="card-text">Logradaouro: {resposta.endereco}</p>
-              <p className="card-text">Logradaouro: {resposta.endereco}</p>
-              <p className="card-text">Logradaouro: {resposta.endereco}</p>
-              <p className="card-text">Logradaouro: {resposta.endereco}</p>
-              <p className="card-text">Logradaouro: {resposta.endereco}</p>
-              <p className="card-text">Logradaouro: {resposta.endereco}</p> */}
+              <p className="card-text">CEP: {resposta.cep}</p>
+              <p className="card-text">Logradouro: {resposta.endereco}</p>
+              <p className="card-text">Bairro: {resposta.bairro}</p>
+              <p className="card-text">Cidade: {resposta.localidade}</p>
+              <p className="card-text">Estado: {resposta.uf}</p>
               <button className="btn btn-outline-primary form-control" onClick={() => {window.print()}}>
                 Imprimir
               </button>
